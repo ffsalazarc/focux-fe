@@ -1,0 +1,55 @@
+
+<form [formGroup]="filterGroupForm" class="w-full">
+    <mat-form-field class="w-full mr-6" appearance="fill">
+        <mat-label class="font-semibold">{{ label }}</mat-label>
+        <input
+            #inputBranch
+            type="text"
+            placeholder="Seleccione ramo"
+            aria-label="Seleccione ramo"
+            matInput
+            [matAutocomplete]="autoCustomerBranch"
+            [formControl]="customerBranchControl"
+        />
+        <mat-icon style="cursor: pointer;" *ngIf="filterGroupForm.get('customerBranchControl').value !== '' && filterGroupForm.get('customerBranchControl').value !== null" (click)="restartingList(filterGroupForm.get('customerBranchControl'))" matSuffix>clear</mat-icon>
+        <mat-icon style="cursor: pointer;" *ngIf="filterGroupForm.get('customerBranchControl').value === '' || filterGroupForm.get('customerBranchControl').value === null">arrow_drop_down</mat-icon>
+    </mat-form-field>
+    <mat-autocomplete #autoCustomerBranch="matAutocomplete">
+        <!-- Start checkbox all -->
+        <map-option>
+            <mat-checkbox
+                class="checkbox-all"
+                [checked]="allCompleteBusinessType"
+                [color]="'primary'"
+                [indeterminate]="someComplete(businessTypeSelected, allCompleteBusinessType)"
+                (change)="setAll($event.checked, businessTypeSelected, optionInput)"
+            >
+                {{ 'Seleccionar todo' }}
+            </mat-checkbox>
+        </map-option>
+        <!-- End checkbox all -->
+        <mat-option
+            *ngFor="let branch of filteredCustomerBranch"
+            [value]="selectedUsers"
+        >
+            <div class="flex" style="justify-content: space-between;">
+                <div class="whitespace-nowrap" (click)="optionClicked($event, branch, selectedBranch, 'branch')">
+                    <mat-checkbox
+                        [checked]="branch.selected"
+                        (change)="toggleSelection(branch, selectedBranch, optionInput)"
+                        (click)="$event.stopPropagation()"
+                        [color]="'primary'"
+                    >
+                        <span class="whitespace-nowrap">{{ branch.name }}</span>
+                    </mat-checkbox>
+                </div>
+                <div class="text-right whitespace-nowrap w-50" (mouseover)="updateSelectedItem(branch)" *ngIf="!(branch.name === selectedItem?.name)">
+                    <span class="whitespace-nowrap"></span>
+                </div>
+                <div class="text-right absolute right-0 w-50" (mouseleave)="updateSelectedItem()" (click)="selectOnlyItem(branch, businessTypeSelected)" *ngIf="branch.name === selectedItem?.name">
+                    <i class="underline not-italic text-xs btn-selected" >SOLAMENTE</i>
+                </div>
+            </div>
+        </mat-option>
+    </mat-autocomplete>
+</form>

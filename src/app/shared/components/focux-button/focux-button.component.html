@@ -1,0 +1,36 @@
+<ng-container [ngSwitch]="type">
+  <button (click)="buttonClick.emit()" *ngSwitchCase="'primary'" [disabled]="disabled" class="focux-button"
+          color="primary" mat-flat-button>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+  <button (click)="buttonClick.emit()" *ngSwitchCase="'secondary'" [disabled]="disabled" class="focux-button"
+  [color]="'accent'" mat-stroked-button>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+<button (click)="buttonClick.emit()" *ngSwitchCase="'cancel'" [disabled]="disabled" 
+  mat-button>
+<ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+<button (click)="buttonClick.emit()" *ngSwitchCase="'defuse'" [disabled]="disabled"   [color]="'warn'"
+mat-button>
+<ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+<button (click)="buttonClick.emit()" *ngSwitchCase="'primary-rounded'" [disabled]="disabled"   [color]="'primary'" class="block sm:hidden mat-elevation-z2 z-50 add"
+mat-fab>
+<ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+<button (click)="buttonClick.emit()" *ngSwitchCase="'secondary-rounded'" [disabled]="disabled"   
+mat-icon-button>
+<ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+  <button (click)="buttonClick.emit()" *ngSwitchDefault [disabled]="disabled" [routerLink]="route ? [route] : []"
+          class="focux-button"
+          color="primary" mat-flat-button>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+</ng-container>
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>
+
+

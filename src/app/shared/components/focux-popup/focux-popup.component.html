@@ -1,0 +1,19 @@
+<div style="padding: 0 !important;" >
+    <div mat-dialog-actions class="flex justify-end mr-2 mb-0">
+      <button mat-button mat-dialog-close (click)="closeDialog()"> <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon></button>
+    </div>
+    <ng-container [ngSwitch]="data.title">
+        <p *ngSwitchCase="'detail'" class="mt-0 text-xl">Detalle de Solicitud</p>
+        <p *ngSwitchCase="'editing'" class="mt-0 text-xl">Editar Solicitud</p>
+        <p *ngSwitchCase="'create'" class="mt-0 text-xl">Crear Solicitud</p>
+        <p *ngSwitchCase="'detail-leader-request'" class="mt-0 text-xl">Detalle de Solicitud</p>
+        <p *ngSwitchCase="'evaluation-template'" class="mt-0 text-xl" style="margin-bottom:20px !important; font-size: 28px !important;">Plantillas para la evaluación</p>
+    </ng-container>
+    <div *ngIf="data.template" class="cool">
+        <div  class="popup_data" [ngStyle]="styleObject()">
+            <ng-container *ngTemplateOutlet="data.template, context: data.context" class="drop-shadow-none"></ng-container>
+        </div>
+    </div>
+  
+</div>
+  

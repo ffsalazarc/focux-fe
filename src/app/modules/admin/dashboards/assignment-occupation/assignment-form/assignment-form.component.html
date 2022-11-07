@@ -1,0 +1,262 @@
+<ng-container [formGroup]="formOcupation">
+    <ng-container formArrayName="collaboratorOccupation">
+        <ng-container *ngFor="let collaborator of formOcupation.get('collaboratorOccupation')['controls']; index as i">
+            <ng-container *ngIf="collaborator !== false;">
+                <div [formGroupName]="i" class="flex flex-col  p-3 bg-card rounded-2xl shadow overflow-hidden w-100vh mb-8">
+                    <div class="sm:flex sm:flex-row grid grid-cols-1 gt-xs:flex-row justify-between">
+                        <div class="flex flex-row gt-xs:flex-row">
+                            <!-- Start collaborator fullName  -->
+                            <div class="flex flex-col sm:mr-6 w-full">
+                                <mat-label class="font-semibold">
+                                    <mat-icon class="icon-size-4 text-green-500"  matPrefix [svgIcon]="'heroicons_solid:check-circle'">
+                                    </mat-icon>
+                                    Solicitud
+                                </mat-label>
+                                <mat-form-field class="w-full sm:w-100 " appearance="fill">
+                                    <input type="text" matInput formControlName="name" [placeholder]="'Pedro Perez'" [matAutocomplete]="auto"
+                                         readonly (click)="_openPopup(collaboratorInfo.assigments[i])">
+                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'">
+                                    </mat-icon>
+                                </mat-form-field>
+                                <mat-label class="occupation-total">Ocupación total {{ collaborator.get('occupation').value }} % </mat-label>
+                                <mat-progress-bar
+                                    class="rounded-full w-full sm:w-100"
+                                    [mode]="'determine'"
+                                    [color]="collaborator.get('occupation').value >= 100 ? 'primary' : 'warn'"
+                                    [value]="collaborator.get('occupation').value"
+                                >
+                                </mat-progress-bar>
+                            </div>
+                            <!-- End collaborator fullName -->
+                        </div>
+                        <div class="sm:flex sm:flex-row sm:gap-8 mt-3 sm:mt-0 grid grid-cols-1 mr-6 justify-end sm:w-3/6 w-full" >
+                            <mat-divider [vertical]="true"></mat-divider>
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full sm:w-1/4">
+                                <mat-label class="font-semibold">Ocupación</mat-label>
+
+                                <input formControlName="occupation" matInput [placeholder]="'Ingrese ocupación'"  readonly><span matSuffix>%</span>
+                                <!-- <mat-error *ngIf="!formOcupation.get('collaboratorOccupation').at(i).get('occupation').valid && (formOcupation.get('collaboratorOccupation').at(i).get('occupation').dirty || formOcupation.get('collaboratorOccupation').at(i).get('occupation').touched)">El campo es obligatorio</mat-error>
+                                <mat-error *ngIf="formOcupation.get('collaboratorOccupation').at(i).get('occupation').hasError('limitError')">La ocupación supera el 100%</mat-error> -->
+                            </mat-form-field>
+                            <mat-divider [vertical]="true"></mat-divider>
+                            <mat-form-field class="w-full sm:w-1/4 readonly-wrapper">
+                                <mat-label class="font-semibold">Rol de solicitud</mat-label>
+                                <mat-select formControlName="roleRequest"  [readonly]="!isDetail" [disabled]="isDetail" class="readonly-block">
+                                    <ng-container *ngFor="let role of rolesRequest$ | async">
+                                        <mat-option [value]="role.id">
+                                            {{role.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                                <!-- <mat-error
+                                    *ngIf="!step1.get('commercialArea').valid && (step1.get('commercialArea').dirty || step1.get('commercialArea').touched)">
+                                    El campo es obligatorio</mat-error> -->
+                            </mat-form-field>
+                            <mat-divider [vertical]="true"></mat-divider>
+                            <mat-form-field class="w-full sm:w-1/3">
+                                <mat-label class="font-semibold">Fecha ocupación</mat-label>
+                                <mat-date-range-input [rangePicker]="picker"  readonly>
+                                  <input matStartDate formControlName="dateInit" placeholder="Start date" >
+                                  <input matEndDate formControlName="dateEnd" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>    
+                            </mat-form-field>
+                        </div>
+                        <div class="flex flex-row mr-6 whitespace-nowrap">
+                            <button class=" min-w-10 min-h-7 h-7 px-2 leading-6 my-auto mr-4" mat-stroked-button
+                                (click)="collaboratorOccupation.at(i).get('isCollapse').setValue(!collaboratorOccupation.at(i).get('isCollapse').value)">
+                                <mat-icon class="icon-size-5"
+                                    [svgIcon]="collaboratorOccupation.at(i).get('isCollapse').value ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'">
+                                </mat-icon>
+                            </button>
+
+                            <button (click)="deleteAssignationOcupation(i)" *ngIf="edit"><img class="delete"
+                                    src="../../../../../../assets/icons/delete-icon.png"></button>
+                        </div>
+                    </div>
+                    <div *ngIf="collaboratorOccupation.at(i).get('isCollapse').value" class="flex flex-col mt-2">
+
+                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                            <textarea formControlName="observation" matInput [placeholder]="'Observaciones'" [rows]="1"></textarea>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+    </ng-container>
+    </ng-container>
+
+</ng-container>
+
+
+<ng-template #requestDetailsTemplate>
+    <div
+        class="flex flex-col pt-6 space-y-8 border-t-mt-px max-w-screen-xl mx-auto py-4 px-6 sm:px-8 bg-gray-100 mt-4"
+    >
+        <!-- Request title -->
+        <ng-container>
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:tag'"
+                ></mat-icon>
+                <div class="ml-6 leading-6">
+                    {{ request.request }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Client -->
+        <ng-container *ngIf="request.client">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:office-building'"></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Cliente</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{ request.client }}
+                </div>
+            </div>
+        </ng-container>
+
+           <!-- Role-->
+           <ng-container *ngIf="request.client">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:office-building'"></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Rol</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{ request.role }}
+                </div>
+            </div>
+        </ng-container>
+
+         <!-- Occupation -->
+        <ng-container *ngIf="request.datePlanEnd">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:calendar'"
+                ></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Porcentaje de Ocupación </span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{
+                       occupationPercentage
+                    }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- BusinessType -->
+        <ng-container *ngIf="request.businessType">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="
+                        'heroicons_outline:clipboard-check'
+                    "
+                ></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Tipo de negocio</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{ request.businessType }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Responsible -->
+        <ng-container *ngIf="request.requestLeader">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:user'"
+                ></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Responsable</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{ request.requestLeader }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Completion Percentage -->
+        <ng-container *ngIf="request.requestLeader">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="
+                        'heroicons_outline:receipt-tax'
+                    "
+                ></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Completado</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{
+                        request.completionPercentage ? request.completionPercentage + '%' : '-'
+                    }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Priority -->
+        <ng-container *ngIf="request.requestPriority">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="
+                        'heroicons_outline:sort-ascending'
+                    "
+                ></mat-icon>
+                <div class="ml-6 leading-6">
+                    {{
+                        request.requestPriority
+                    }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Date plan end -->
+        <ng-container *ngIf="request.requestPlanEnd">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:calendar'"
+                ></mat-icon>
+                <span class="mx-2 font-medium"
+                    >Fecha de planeada de entrega</span
+                >
+                <span class="mx-2">&bull;</span>
+                <div class="ml-2 leading-6">
+                    {{
+                        request.reqeustPlanEnd
+                            | date: "longDate"
+                    }}
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Description request -->
+        <ng-container *ngIf="request.requestDescription">
+            <div class="flex">
+                <mat-icon
+                    [svgIcon]="
+                        'heroicons_outline:menu-alt-2'
+                    "
+                ></mat-icon>
+                <div
+                    class="max-w-none ml-6 prose prose-sm"
+                    [innerHTML]="request.requestDescription"
+                ></div>
+            </div>
+        </ng-container>
+    </div> 
+</ng-template>

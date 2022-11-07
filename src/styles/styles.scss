@@ -1,0 +1,124 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    .mat-table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        display: table;
+        border-collapse: collapse;
+        margin: 0px;
+    }
+    .mat-row,
+    .mat-header-row {
+        display: table-row;
+    }
+    .mat-cell,
+    .mat-header-cell {
+        word-wrap: initial;
+        display: table-cell;
+        padding: 0px 5px;
+        line-break: unset;
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: middle;
+       // padding: 22px 0px 22px 5px; /
+        padding: 0 0px 0 5px; // ***
+        font-size: 11px;
+    }
+}
+
+.th-center {
+    text-align: center;
+}
+.th-left {
+    text-align: left;
+}
+.th-right {
+    text-align: right;
+}
+
+.w-75 {
+    max-width: 75px;
+}
+
+.w-100 {
+    width: 100px;
+}
+
+.customWidthClass {
+    width: 150px;
+    max-width: 150px;
+    flex: 0 0 100px;
+}
+ 
+ .mat-step-label,
+ .mat-expansion-panel h2, 
+ .mat-option-text, 
+ .mat-cell, 
+ .mat-footer-cell,
+ .mat-expansion-panel-content{
+  font-size: 12px;
+ }
+
+
+.add {
+  width: 52px !important;
+  height: 52px !important;
+  position: fixed !important;
+  bottom: 5% !important;
+  right: 10% !important;
+}
+
+.area_solicitud 
+.mat-form-field-infix{
+    height: 70px !important;
+}
+.mat-row:hover{
+background-color:rgba(241, 245, 249 ) !important;
+}
+@media (max-width: 480px) {
+    body, 
+    .mat-step-label,
+    .mat-expansion-panel h2, 
+    .mat-option-text, 
+    .mat-cell, 
+    .mat-footer-cell, 
+    .mat-expansion-panel-content{
+     font-size: 11px;
+    }
+    .develop-tag {
+        left: 25% !important;
+        font-size: 20px !important;
+    }
+
+    .button_edit {
+        position: absolute;
+        top: 40%;
+        right: -25px;
+    }
+
+    .mat-step-text-label{
+        display: none !important;
+    }
+
+    .cdk-overlay-pane, 
+    .mat-dialog-container{
+        max-width: 90vw !important;
+    }
+    
+    .mat-horizontal-content-container{
+        padding: 0 16px 12px 8px !important;
+    }
+
+    fuse-drawer{
+        width: 70vw !important;
+        min-width: 70vw !important;
+    }
+}

@@ -1,0 +1,63 @@
+<div class="relative">
+    <ng-container *ngIf="listMaster$ | async as elements">
+        <ng-container *ngIf="elements.length; else noElements">
+            <ng-container *ngFor="
+                    let element of elements | paginate: page_size:page_number;
+                    let i = index;
+                    trackBy: trackByFn
+                ">
+                <ng-container *ngIf="element.isActive != 0">
+                    <!-- Group -->
+                    <ng-container *ngIf="
+                            i === 0 ||
+                            element.name.charAt(0) !==
+                                elements[i - 1].name.charAt(0)
+                        ">
+                        <div
+                            class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-900">
+                            {{ element.name.charAt(0) }}
+                        </div>
+                    </ng-container>
+                    <!-- element -->
+                    <a class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b" [ngClass]="{
+                            'hover:bg-gray-100 dark:hover:bg-hover':
+                                !selectedRequestMaster ||
+                                selectedRequestMaster.id !== element.id,
+                            'bg-primary-50 dark:bg-hover':
+                                selectedRequestMaster &&
+                                selectedRequestMaster.id === element.id
+                        }" [routerLink]="['./', element.id]">
+                        <!--<div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                        <ng-container *ngIf="element.avatar">
+                            <img
+                                class="object-cover w-full h-full"
+                                [src]="element.avatar"
+                                alt="element avatar"/>
+                        </ng-container>
+                        <ng-container *ngIf="!element.avatar">
+                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{element.name.charAt(0)}}
+                            </div>
+                        </ng-container>
+                    </div>-->
+                        <div class="min-w-0 ml-4">
+                            <div class="font-medium leading-5 truncate">
+                                {{ element.name }}
+                            </div>
+                        </div>
+                    </a>
+                </ng-container>
+            </ng-container>
+            <mat-paginator class="flex justify-end" [length]="elements.length" [pageSize]="page_size"
+                [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)" aria-label="Select page">
+            </mat-paginator>
+        </ng-container>
+    </ng-container>
+
+    <!-- No elements -->
+    <ng-template #noElements>
+        <div class="p-8 sm:p-16 border-t text-2xl sm:text-4xl font-semibold tracking-tight text-center">
+            No hay {{ Title }}!
+        </div>
+    </ng-template>
+</div>

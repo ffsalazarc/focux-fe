@@ -1,0 +1,87 @@
+<div class="absolute inset-0 flex flex-col w-full sm:min-w-100 overflow-hidden">
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()"
+    >
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="'over'"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer
+        >
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto">
+                <!-- Header -->
+                <div
+                    class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b"
+                >
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">&Aacute;rea t&eacute;cnica
+                            <focux-button class="ml-4"
+                            (buttonClick)="createTechnicalArea()">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus'">
+                                </mat-icon>
+                                <span class="ml-2 mr-1">Agregar</span>
+                            </focux-button>
+                        </div>
+
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="technicalAreasCount > 0">
+                                {{ technicalAreasCount }}
+                            </ng-container>
+                            {{
+                                technicalAreasCount
+                                    | i18nPlural
+                                        : {
+                                              "=0": "No hay &Aacute;rea(s) t&eacute;cnica(s)",
+                                              "=1": "&aacute;rea(s) t&eacute;cnica(s)",
+                                              other: "&aacute;rea(s) t&eacute;cnica(s)"
+                                          }
+                            }}
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+                    <app-focux-search
+                    [placeholder]="'Buscar area tecnica'"
+                    [searchUrl]="'technicalareas'"
+                    (onSearch)="handleSearch($event)"
+                    ></app-focux-search>
+                </div>
+
+                <!-- TechnicalAreas list -->
+                <fuse-alert
+                    *ngIf="activatedAlert"
+                    class="mt-4 mb-4"
+                    [type]="'success'"
+                    [dismissible]="true"
+                    [dismissed]="true"
+                    [name]="'alertDeleteTechnicalArea'"
+                    (click)="dismissFuse('alertDeleteTechnicalArea')"
+                >
+                    <span fuseAlertTitle>{{ successSave }}</span>
+                </fuse-alert>
+                <app-focux-list-master
+                    [listMaster$]="technicalAreas$"
+                    [selectedRequestMaster]="selectedTechnicalArea"
+                    Title="Areas Técnicas"
+                >
+                </app-focux-list-master>
+            </div>
+            <focux-button class="ml-4"
+            [type]="'primary-rounded'"
+            (buttonClick)="createTechnicalArea()">
+            <mat-icon>add</mat-icon>
+            </focux-button>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

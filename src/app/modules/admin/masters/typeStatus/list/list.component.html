@@ -1,0 +1,87 @@
+<div class="absolute inset-0 flex flex-col min-w-100 overflow-hidden">
+
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="'over'"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Main -->
+            <div class="flex-auto">
+
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
+
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Tipos de estatus
+                            <focux-button class="ml-4"
+                            (buttonClick)="createTypeStatu()">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus'">
+                                </mat-icon>
+                                <span class="ml-2 mr-1">Agregar</span>
+                            </focux-button>
+                        </div>
+
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="typeStatusCount > 0">
+                                {{typeStatusCount}}
+                            </ng-container>
+                            {{typeStatusCount | i18nPlural: {
+                            '=0'   : 'No hay tipos de estatus',
+                            '=1'   : 'Tipo de estatus',
+                            'other': 'Tipos de estatus'
+                        } }}
+
+                        </div>
+
+                    </div>
+
+                    <!-- Main actions -->
+                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+                        <!-- Search -->
+                        <div class="flex-auto">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input
+                                    matInput
+                                    [formControl]="searchInputControl"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'Buscar Tipo de Estatus'">
+
+                            </mat-form-field>
+
+
+                        </div>
+                        <!-- Add typeStatu button -->
+
+                    </div>
+                </div>
+
+                <!-- TypeStatus list -->
+                <app-focux-list-master [listMaster$]="typeStatus$" [selectedRequestMaster]="selectedTypeStatu" Title="tipos de estatus">
+
+                </app-focux-list-master>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

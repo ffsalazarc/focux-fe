@@ -1,0 +1,89 @@
+<div class="absolute inset-0 flex flex-col w-full sm:min-w-100 overflow-hidden">
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()"
+    >
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="'over'"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer
+        >
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto">
+                <!-- Header -->
+                <div
+                    class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b"
+                >
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Departamentos
+                            <focux-button
+                            *ngIf="canEdit()"
+                             class="ml-4"
+                            (buttonClick)="createDepartment()">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:plus'">
+                            </mat-icon>
+                                <span class="ml-2 mr-1">Agregar</span>
+                            </focux-button>
+                        </div>
+
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="departmentsCount > 0">
+                                {{ departmentsCount }}
+                            </ng-container>
+                            {{
+                                departmentsCount
+                                    | i18nPlural
+                                        : {
+                                              "=0": "No hay departamentos",
+                                              "=1": "departamento",
+                                              other: "departamentos"
+                                          }
+                            }}
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+                    <app-focux-search
+                    [placeholder]="'Buscar Departamento'"
+                    [searchUrl]="'departments'"
+                    (onSearch)="handleSearch($event)"
+                    ></app-focux-search>
+                </div>
+
+                <!-- Departments list -->
+                <fuse-alert
+                    *ngIf="activatedAlert"
+                    class="mt-4 mb-4"
+                    [type]="'success'"
+                    [dismissible]="true"
+                    [dismissed]="true"
+                    [name]="'alertDeleteDepartment'"
+                    (click)="dismissFuse('alertDeleteDepartment')"
+                >
+                    <span fuseAlertTitle>{{ successSave }}</span>
+                </fuse-alert>
+                <app-focux-list-master
+                    [listMaster$]="departments$"
+                    [selectedRequestMaster]="selectedDepartment"
+                    Title="departamentos"
+                >
+                </app-focux-list-master>
+            </div>
+            <focux-button class="ml-4"
+            [type]="'primary-rounded'"
+            (buttonClick)="createDepartment()">
+            <mat-icon>add</mat-icon>
+            </focux-button>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

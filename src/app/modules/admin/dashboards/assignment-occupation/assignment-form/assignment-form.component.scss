@@ -1,0 +1,12 @@
+.delete{
+    width: 24px;
+    height: 24px;
+}
+
+.readonly-wrapper {
+    cursor: not-allowed;
+}
+
+.readonly-wrapper .readonly-block {
+    pointer-events: none;
+}

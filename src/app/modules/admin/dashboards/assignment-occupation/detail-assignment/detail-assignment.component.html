@@ -1,0 +1,58 @@
+<div class="content flex flex-auto border-t-mt-px max-w-screen-xl mx-auto py-4 px-6 sm:px-8 h-full bg-gray-50">
+    <div class="w-full">
+        <div *ngIf="!viewDetail" class="sm:flex grid w-full justify-end gap-4 grid-cols-2 sm:grid-cols-2">
+            
+            <div class="sm:w-1/4 w-full sm:grid-cols-1">
+                <!-- Start filter for collaborators -->
+                <app-focux-input-autocomplete
+                    [label]="'Colaborador'"
+                    [items]="selectedCollaborators"
+                    (filterCollaborators)="filterListCollaborator($event)"
+                ></app-focux-input-autocomplete>
+                <!-- End filter for collaborators -->
+            </div>
+            <div class="sm:w-1/4 w-full sm:grid-cols-1">
+                <!-- Start filter for collaborators -->
+                <app-focux-input-autocomplete
+                    [label]="'Lider'"
+                    [items]="selectedLeaders"
+                    (filterCollaborators)="filterListCollaboratorByLider($event)"
+                ></app-focux-input-autocomplete>
+                <!-- End filter for collaborators -->
+            </div>
+            
+        </div>
+        <!-- End filter for collaborators -->
+        <app-focux-content-main *ngIf="!viewDetail">
+            <!-- Start panel filter -->
+                <app-focux-panel-filter
+                    panel
+                    [clients]="clients$ | async "
+                    [knowledges]="knowledges$ | async"
+                    (changeFilter)="handleEventFilter($event)"
+                    [initialState]="initialState"
+                    [openPanelClient]="openPanelClient"
+                    [openPanelKnowledges]="openPanelKnowledges"
+                    [occupationState]="occupationState"
+                ></app-focux-panel-filter>
+            <!-- End panel filter -->
+            
+            <!-- Start list collaborators -->
+                <app-list-collaborators
+                    main
+                    [collaborators]="collaborators$ | async"
+                    [filterCollaboratorForm]="filterCollaboratorForm"
+                    (handleEventClick)="goDetail($event)"
+                    [allSelected]="true"
+                ></app-list-collaborators>
+            <!-- End list collaborators -->
+        </app-focux-content-main>
+        
+        <app-assignment-collaborator
+            *ngIf="viewDetail"
+            (goBack)="goDetail()">
+        </app-assignment-collaborator>
+    </div>
+
+    
+</div>

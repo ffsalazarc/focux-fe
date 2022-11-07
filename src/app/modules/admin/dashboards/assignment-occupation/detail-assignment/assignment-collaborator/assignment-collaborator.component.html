@@ -1,0 +1,63 @@
+<div class="content flex flex-auto gap-2 border-t-mt-px max-w-screen-xl mx-auto py-4 sm:px-8 h-full bg-gray-50">
+    <div class="flex flex-col gap-4 w-full">
+        <div class="flex flex-row justify-end items-center fixed sm:static bottom-5 right-5 z-10">
+            <button
+                mat-fab
+                [color]="'accent'"
+                type="button"
+                (click)="goBack.emit()"
+                matTooltip="Regresar"
+            >
+                <mat-icon class="icon-size-7">
+                    keyboard_arrow_left
+                </mat-icon>
+            </button>
+        </div>
+        <div class="flex flex-col gap-4 w-full">
+            <div class="flex w-full">
+                <mat-accordion class="w-full" multi>
+                    <mat-expansion-panel *ngFor="let collaborator of collaboratorsPerformace; index as i">
+                        <mat-expansion-panel-header class="w-full h-full pt-2 sm:pt-0 sm:h-20">
+                        
+                            <div class="grid grid-cols-1 sm:flex">
+                                <mat-panel-title class="font-semibold mb-3 items-center w-full sm:w-1/5">
+                                    <div class="flex flex-0 items-center justify-center w-12 h-12 rounded-full overflow-hidden mr-2">
+                                        <ng-container>
+                                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                                {{ collaborator.name.charAt(0) | uppercase }}
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <span>{{ collaborator.name + ' ' +  collaborator.lastName }}</span>
+                                </mat-panel-title>
+                                <mat-panel-title class="w-full hidden sm:block gap-3 sm:gap-0 sm:w-1/5 font-semibold mb-3 items-center">
+                                    {{ collaborator.client }}
+                                </mat-panel-title>
+                                <div class="w-full sm:w-1/3 font-semibold mb-3 mr-1">
+                                    <mat-label class="font-semibold my-3">
+                                        Total Ocupación {{ collaborator.percentageOccupation}} %
+                                    </mat-label>
+                                    <mat-progress-bar
+                                        class="rounded-full w-80 my-3 sm:my-1"
+                                        [mode]="'determine'"
+                                        [color]="'primary'"
+                                        [value]="collaborator.percentageOccupation"
+                                    >
+                                    </mat-progress-bar>
+                                </div>
+                            </div>
+                        </mat-expansion-panel-header>
+                        <app-assignment-form 
+                            [collaboratorInfo]="collaboratorsSelected[i]"
+                            [formOcupation]="collaborator.assignmentForm"
+                            (calculatePercentageReal)="calculatePercentageReal"
+                            [edit]="false"
+                        ></app-assignment-form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+</div>
+
+
+

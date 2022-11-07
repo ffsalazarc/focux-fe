@@ -1,0 +1,157 @@
+<div class="flex flex-auto border-t-mt-px max-w-screen-xl mx-auto py-4 px-6 sm:px-8 h-full bg-gray-50">
+
+    <div class="w-full">
+
+        <div class="flex flex-col">
+            <div class="flex flex-row mt-0">
+                <div class="flex flex-col" style="width: 100%;">
+                    <div class="h-13" style="width: 180%;">
+                        <fuse-alert class="h-13" style="width: 100%;"
+                    *ngIf="activatedAlert"
+                    [type]="'success'"
+                    [dismissible]="true"
+                    [dismissed]="true"
+                    [name]="'alertBox4'"
+                    (click)="dismissFuse('alertBox4')"
+                >
+                    <span fuseAlertTitle>{{successSave}}</span>
+                </fuse-alert>
+                    </div>
+                        <mat-label class="font-semibold mr-6 ml-1 " >Solicitud</mat-label>
+                        <mat-form-field class=" sm:text-base">
+                        <input type="text" [placeholder]="'US-300'" matInput [value]="request?.titleRequest || ''" readonly>
+                        <!-- <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option.name}}
+                            </mat-option>
+                        </mat-autocomplete> -->
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-row justify-end items-center h-10 w-14 sm:h-12">
+
+                    <button
+                        class="w-full h-full"
+                        mat-fab
+                        [color]="'accent'"
+                        type="button"
+                        (click)="changeTab()"
+                        matTooltip="Regresar"
+                    >
+                        <mat-icon
+                            class="icon-size-7"
+                        >
+                            keyboard_arrow_left
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+
+        <ng-container [formGroup]="formOcupation" *ngIf="collaboratorsArr.length">
+            <ng-container formArrayName="collaboratorOccupation">
+                <ng-container *ngFor="let collaborator of collaboratorOccupation.controls; index as i">
+                    <ng-container *ngIf="collaborator !== false;">
+                        <div [formGroupName]="i" class="flex flex-col  p-3 bg-card rounded-2xl shadow overflow-hidden w-100vh mb-8">
+                            <div class="sm:flex sm:flex-row grid grid-cols-1 gt-xs:flex-row w-full">
+                                <div class="sm:flex sm:flex-row grid gt-xs:flex-row sm:mb-0 mb-3 w-full sm:w-1/4">
+                                    <!-- Start collaborator fullName  -->
+                                    <div class="sm:flex sm:flex-col sm:mr-4 w-full grid grid-cols-1">
+                                        <mat-label class="font-semibold">
+                                            <mat-icon *ngIf="collaboratorOccupation.at(i).valid" class="icon-size-4 text-green-500"  matPrefix [svgIcon]="'heroicons_solid:check-circle'">
+                                            </mat-icon>
+                                            Colaborador
+                                        </mat-label>
+                                        <mat-form-field class="w-full mb-2 sm:mb-0  sm:text-base" appearance="fill">
+                                            <input type="text" matInput formControlName="name" [placeholder]="'Pedro Perez'" [matAutocomplete]="auto"
+                                                 readonly>
+                                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'">
+                                            </mat-icon>
+                                        </mat-form-field>
+                                        <mat-label class="occupation-total">Ocupación total {{ calculatePercentageReal(formOcupation.get('collaboratorOccupation').at(i).value)}} % </mat-label>
+                                        <mat-progress-bar
+                                            class="rounded-full w-full"
+                                            [mode]="'determine'"
+                                            [color]="calculatePercentageReal(formOcupation.get('collaboratorOccupation').at(i).value) >= 100 ? 'primary' : 'warn'"
+                                            [value]="calculatePercentageReal(formOcupation.get('collaboratorOccupation').at(i).value)"
+                                        >
+                                        </mat-progress-bar>
+                                    </div>
+                                    <!-- End collaborator fullName -->
+                                </div>
+                                <div class="sm:flex sm:flex-row sm:gap-8 gap-2 sm:mr-6 sm:justify-end grid grid-cols-1 sm:w-7/12 w-full" style="">
+                                    <mat-divider [vertical]="true"></mat-divider>
+                                    <mat-form-field [ngClass]="formFieldHelpers" class="sm:w-1/4 w-full  sm:text-base">
+                                        <mat-label class="font-semibold">Ocupación</mat-label>
+
+                                        <input formControlName="occupation" matInput [placeholder]="'Ingrese ocupación'"><span matSuffix>%</span>
+                                        <mat-error *ngIf="!formOcupation.get('collaboratorOccupation').at(i).get('occupation').valid && (formOcupation.get('collaboratorOccupation').at(i).get('occupation').dirty || formOcupation.get('collaboratorOccupation').at(i).get('occupation').touched)">El campo es obligatorio</mat-error>
+                                        <mat-error *ngIf="formOcupation.get('collaboratorOccupation').at(i).get('occupation').hasError('limitError')">La ocupación supera el 100%</mat-error>
+                                    </mat-form-field>
+                                    <mat-divider [vertical]="true"></mat-divider>
+                                    <mat-form-field class="sm:w-1/4 w-full  sm:text-base">
+                                        <mat-label>Rol de solicitud</mat-label>
+                                        <mat-select formControlName="roleRequest"  [readonly]="isDetail " [disabled]="isDetail">
+                                            <ng-container *ngFor="let role of rolesRequest$ | async">
+                                                <mat-option [value]="role.id">
+                                                    {{role.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <!-- <mat-error
+                                            *ngIf="!step1.get('commercialArea').valid && (step1.get('commercialArea').dirty || step1.get('commercialArea').touched)">
+                                            El campo es obligatorio</mat-error> -->
+                                    </mat-form-field>
+                                    <mat-divider [vertical]="true"></mat-divider>
+                                    <mat-form-field class="sm:w-1/3 w-full  sm:text-base">
+                                        <mat-label>Fecha ocupación</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                          <input matStartDate formControlName="dateInit" placeholder="Start date">
+                                          <input matEndDate formControlName="dateEnd" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>    
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex flex-row sm:mr-6 whitespace-nowrap">
+                                    <button class="w-10/12 sm:min-w-10 sm:min-h-7 h-7 px-2 leading-6 my-auto mr-4" mat-stroked-button
+                                        (click)="collaboratorOccupation.at(i).get('isCollapse').setValue(!collaboratorOccupation.at(i).get('isCollapse').value)">
+                                        <mat-icon class="icon-size-5"
+                                            [svgIcon]="collaboratorOccupation.at(i).get('isCollapse').value ? 'heroicons_solid:chevron-down' : 'heroicons_solid:chevron-up'">
+                                        </mat-icon>
+                                    </button>
+
+                                    <button class="sm:w-full" (click)="deleteAssignationOcupation(i)"><img class="delete"
+                                            src="../../../../../../assets/icons/delete-icon.png"></button>
+                                </div>
+                            </div>
+                            <div *ngIf="collaboratorOccupation.at(i).get('isCollapse').value" class="flex flex-col mt-2">
+
+                                <mat-form-field class="  sm:text-base fuse-mat-textarea flex-auto">
+                                    <textarea formControlName="observation" matInput [placeholder]="'Observaciones'" [rows]="1"></textarea>
+                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </ng-container>
+            </ng-container>
+            </ng-container>
+
+        </ng-container>
+            <!-- No collaborators Selected -->
+            <ng-container *ngIf="!collaboratorsArr.length">
+                <div class="p-8 sm:p-16 border-t text-base sm:text-4xl font-semibold tracking-tight text-center">No ha seleccionado colaboradores!</div>
+            </ng-container>
+        <div>
+    </div>
+
+            <div class="flex flex-row mt-8 justify-end" *ngIf="collaboratorsArr.length">
+                <button (click)="goBack()" mat-stroked-button style="border-color:lightgray !important;">Cancelar
+                </button>
+                <!-- <button class="-ml-4" mat-button [color]="'warn'">Cancelar</button> -->
+                <button (click)="saveAssignationOccupation()" [disabled]="!formOcupation.valid" class="ml-3" mat-flat-button [color]="'primary'">
+                    <span class=" justify-center">Guardar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

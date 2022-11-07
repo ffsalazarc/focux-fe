@@ -1,0 +1,95 @@
+<div class="absolute inset-0 flex flex-col w-full sm:min-w-100 overflow-hidden">
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()"
+    >
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="'over'"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer
+        >
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto">
+                <!-- Header -->
+                <div
+                    class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b"
+                >
+                    <!-- Statuses list -->
+
+                    <!-- Title -->
+                    <div>
+                        <div
+                            class="text-3xl sm:text-4xl flex items-center font-extrabold tracking-tight leading-none"
+                        >
+                            Estatus
+
+                            <focux-button class="ml-4"
+                            (buttonClick)="createStatus()">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus'">
+                                </mat-icon>
+                                <span class="ml-2 mr-1">Agregar</span>
+                            </focux-button>
+                        </div>
+
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="statusesCount > 0">
+                                {{ statusesCount }}
+                            </ng-container>
+                            {{
+                                statusesCount
+                                    | i18nPlural
+                                        : {
+                                              "=0": "No hay Estatus",
+                                              "=1": "estatus",
+                                              other: "estatus"
+                                          }
+                            }}
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+
+
+                    <app-focux-search
+                            [placeholder]="'Buscar status'"
+                            [searchUrl]="'statuses'"
+                            (onSearch)="handleSearch($event)"
+                    ></app-focux-search>
+                </div>
+
+                <fuse-alert
+                    *ngIf="activatedAlert"
+                    class="mt-4 mb-4"
+                    [type]="'success'"
+                    [dismissible]="true"
+                    [dismissed]="true"
+                    [name]="'alertDeleteStatus'"
+                    (click)="dismissFuse('alertDeleteStatus')"
+                >
+                    <span fuseAlertTitle>{{ successSave }}</span>
+                </fuse-alert>
+                <app-focux-list-master
+                    [listMaster$]="statuses$"
+                    [selectedRequestMaster]="selectedStatus"
+                    Title="Estatus"
+                >
+                </app-focux-list-master>
+            </div>
+
+            <focux-button class="ml-4"
+            [type]="'primary-rounded'"
+            (buttonClick)="createStatus()">
+            <mat-icon>add</mat-icon>
+            </focux-button>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

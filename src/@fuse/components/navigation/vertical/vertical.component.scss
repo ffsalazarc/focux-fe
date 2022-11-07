@@ -1,0 +1,14 @@
+@import 'styles/appearances/default';
+@import 'styles/appearances/compact';
+@import 'styles/appearances/dense';
+@import 'styles/appearances/thin';
+
+@media only screen and (max-width: 600px) {
+
+    $fuse-vertical-navigation-width: 80;
+    fuse-vertical-navigation {
+        width: #{$fuse-vertical-navigation-width}vw !important;
+        min-width: #{$fuse-vertical-navigation-width}vw !important;
+        max-width: #{$fuse-vertical-navigation-width}vw !important;
+    }
+  }
